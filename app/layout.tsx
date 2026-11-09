@@ -77,6 +77,10 @@ export default function RootLayout({
           // Applies the saved theme before first paint (no colour flash).
           dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }}
         />
+        <meta
+          name="google-site-verification"
+          content="eVr-12vBl_k8wvWDXSZsyL3G3E4tUM3Vfg8aXdSl7ow"
+        />
         {children}
       </body>
     </html>
