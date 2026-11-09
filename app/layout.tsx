@@ -5,7 +5,7 @@ import { DEFAULT_THEME_BG, THEME_INIT_SCRIPT } from "@/lib/theme";
 
 import "./globals.css";
 
-const BASE_URL = process.env.PLATEN_BASE_URL ?? "http://localhost:3000";
+const BASE_URL = process.env.PLATEN_BASE_URL ?? "https://platentype.vercel.app/";
 
 const mono = JetBrains_Mono({
   subsets: ["latin"],
@@ -22,7 +22,7 @@ const sans = Inter({
 });
 
 const PAGE_DESCRIPTION =
-  "A typing game with time, words, quote, zen and custom drills, with punctuation and number options. Every finished word throws a different strike.";
+  "A modern typing arena inspired by monkey type. Time, words, quote, zen and custom drills with punctuation and number options. Every finished word throws a different strike.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
@@ -38,6 +38,14 @@ export const metadata: Metadata = {
     siteName: "Platen",
     type: "website",
     locale: "en_US",
+    images: [
+      {
+        url: "/icon.svg",
+        width: 512,
+        height: 512,
+        alt: "Platen typing arena logo",
+      },
+    ],
   },
   twitter: {
     card: "summary",
