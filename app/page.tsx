@@ -14,12 +14,12 @@ export default async function Home() {
   await connection();
   return (
     <>
-      {/* Skip-to-content link for keyboard users — visually hidden, no UI change. */}
+      {/* Skip-to-content link for keyboard users: visually hidden, no UI change. */}
       <a href="#game" className="screen-reader-only" rel="nofollow">
         Skip to content
       </a>
-      {/* Visually-hidden heading for search engines and screen readers — no UI change. */}
-      <h1 className="screen-reader-only">Platen — typing arena</h1>
+      {/* Visually-hidden heading for search engines and screen readers: no UI change. */}
+      <h1 className="screen-reader-only">Platen: typing arena</h1>
       <section
         id="game"
         aria-label="Typing game"
@@ -38,7 +38,7 @@ export default async function Home() {
             "@context": "https://schema.org",
             "@type": "WebApplication",
             name: "Platen",
-            alternateName: "Platen — typing arena",
+            alternateName: "Platen: typing arena",
             applicationCategory: "Game",
             operatingSystem: "Browser",
             description: PAGE_DESCRIPTION,
@@ -54,12 +54,12 @@ export default async function Home() {
       <p
         style={{
           fontSize: "0.875rem",
-          color: "var(--muted, #7d869a)",
+          color: "var(--muted)",
           margin: "0.5rem 0 1rem 0",
           textAlign: "center",
         }}
       >
-        A modern typing arena — a lightweight, browser-first replica inspired
+        A modern typing arena: a lightweight, browser-first replica inspired
         by monkey type.
       </p>
       <TypeFight initialSeed={makeSeed()} />

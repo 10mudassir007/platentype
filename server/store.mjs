@@ -19,20 +19,35 @@ export const SESSION_DAYS = 30;
 
 let cache = null;
 let writeChain = Promise.resolve();
+let writableDir = DATA_DIR;
 
-function normalize(raw) {
-  if (!raw || typeof raw !== "object") return structuredClone(EMPTY);
-  return {
-    users: raw.users && typeof raw.users === "object" ? raw.users : {},
-    sessions: raw.sessions && typeof raw.sessions === "object" ? raw.sessions : {},
-    leaderboard: Array.isArray(raw.leaderboard) ? raw.leaderboard : [],
-  };
+/**
+ * Try to write a test file to determine if DATA_DIR is writable.
+ * On Vercel/serverless, the project root is read-only; fall back to /tmp.
+ */
+async function ensureWritableDir() {
+  if (writableDir !== DATA_DIR) return;
+  const testFile = path.join(DATA_DIR, ".write-test");
+  try {
+    await mkdir(DATA_DIR, { recursive: true });
+    await writeFile(testFile, "ok", "utf8");
+    await rename(testFile, testFile + ".bak");
+    try {
+      await rename(testFile + ".bak", testFile);
+    } catch {
+      // ignore
+    }
+  } catch {
+    writableDir = "/tmp";
+  }
 }
 
 async function load() {
   if (cache) return cache;
+  await ensureWritableDir();
+  const file = path.join(writableDir, "platen.json");
   try {
-    cache = normalize(JSON.parse(await readFile(DATA_FILE, "utf8")));
+    cache = normalize(JSON.parse(await readFile(file, "utf8")));
   } catch {
     cache = structuredClone(EMPTY);
   }
@@ -40,12 +55,15 @@ async function load() {
 }
 
 async function persist() {
+  await ensureWritableDir();
+  const dir = writableDir;
+  const file = path.join(dir, "platen.json");
   const snapshot = JSON.stringify(cache, null, 2);
   writeChain = writeChain.then(async () => {
-    await mkdir(DATA_DIR, { recursive: true });
-    const temp = `${DATA_FILE}.${process.pid}.tmp`;
+    await mkdir(dir, { recursive: true });
+    const temp = `${file}.${process.pid}.tmp`;
     await writeFile(temp, snapshot, "utf8");
-    await rename(temp, DATA_FILE);
+    await rename(temp, file);
   });
   return writeChain;
 }
